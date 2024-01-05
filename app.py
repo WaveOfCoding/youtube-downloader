@@ -32,6 +32,11 @@ url_label.pack(pady=10)
 entry_url.pack(pady=10)
 
 
+# create a download button
+download_button = ctk.CTkButton(content_frame, text="Download")
+download_button.pack(pady=10)
+
+
 # to start the app
 root.mainloop()
 
