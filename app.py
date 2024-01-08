@@ -42,5 +42,15 @@ resolution_combobox = ttk.Combobox(content_frame, values=resolutions, textvariab
 resolution_combobox.pack(pady=10)
 resolution_combobox.set("720px")
 
+
+# create a label and the progress bar to display the download progress
+progress_label = ctk.CTkLabel(content_frame, text="%0")
+progress_label.pack(pady=10)
+
+progress_bar = ctk.CTkProgressBar(content_frame, width=400)
+progress_bar.set(0.6)
+progress_bar.pack(pady=10)
+
+
 # to start the app
 root.mainloop()
