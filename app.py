@@ -5,7 +5,35 @@ import os
 
 
 def download_video():
-    print("Clicked")
+    url = entry_url.get()
+    resolution = resolution_var.get()
+
+    progress_label.pack(pady=10)
+    progress_bar.pack(pady=10)
+    status_label.pack(pady=10)
+
+    try:
+        yt = YouTube(url, on_progress_callback=on_progress)
+        stream = yt.streams.filter(res=resolution).first()
+
+        # download the video into a specific directory
+        os.path.join("downloads", f"{yt.title}.mp4")
+        stream.download(output_path="downloads")
+
+        status_label.configure(text="Downloaded!", text_color="white", fg_color="green")
+    except Exception as e:
+        status_label.configure(text=f"Error {str(e)}", text_color="white", fg_color="red")
+
+
+def on_progress(stream, chunk, bytes_remaining):
+    total_size = stream.filesize
+    bytes_downloaded = total_size - bytes_remaining
+    percentage_completed = bytes_downloaded / total_size * 100
+
+    progress_label.configure(text=str(int(percentage_completed)) + "%")
+    progress_label.update()
+
+    progress_bar.set(float(percentage_completed / 100))
 
 
 # create a root window
@@ -26,7 +54,7 @@ content_frame = ctk.CTkFrame(root)
 content_frame.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
 # create a label and the entry widget for the video url
-url_label = ctk.CTkLabel(content_frame, text="Enter the youtube url here : ")
+url_label = ctk.CTkLabel(content_frame, text="Enter the Youtube url here : ")
 entry_url = ctk.CTkEntry(content_frame, width=400, height=40)
 url_label.pack(pady=10)
 entry_url.pack(pady=10)
@@ -36,26 +64,20 @@ download_button = ctk.CTkButton(content_frame, text="Download", command=download
 download_button.pack(pady=10)
 
 # create a resolution combo box
-resolutions = ["720px", "360px", "240px"]
+resolutions = ["720p", "360p", "240p"]
 resolution_var = ctk.StringVar()
 resolution_combobox = ttk.Combobox(content_frame, values=resolutions, textvariable=resolution_var)
 resolution_combobox.pack(pady=10)
-resolution_combobox.set("720px")
-
+resolution_combobox.set("720p")
 
 # create a label and the progress bar to display the download progress
 progress_label = ctk.CTkLabel(content_frame, text="%0")
-progress_label.pack(pady=10)
 
 progress_bar = ctk.CTkProgressBar(content_frame, width=400)
-progress_bar.set(0.6)
-progress_bar.pack(pady=10)
-
+progress_bar.set(0)
 
 # create the status label
-status_label = ctk.CTkLabel(content_frame, text="Downloaded")
-status_label.pack(pady=10)
-
+status_label = ctk.CTkLabel(content_frame, text="")
 
 # to start the app
 root.mainloop()
