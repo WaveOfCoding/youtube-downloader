@@ -52,5 +52,10 @@ progress_bar.set(0.6)
 progress_bar.pack(pady=10)
 
 
+# create the status label
+status_label = ctk.CTkLabel(content_frame, text="Downloaded")
+status_label.pack(pady=10)
+
+
 # to start the app
 root.mainloop()
